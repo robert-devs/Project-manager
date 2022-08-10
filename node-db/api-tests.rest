@@ -1,0 +1,90 @@
+
+# 2022-08-09T07:43:54.312Z
+
+
+### GET ALL Project
+GET http://localhost:5000/projects/all
+
+
+
+### CREATE PROJECT
+POST http://localhost:5000/projects/create
+Content-Type: application/json
+
+{
+    "name":"Work on Bruh",
+    "description":"bruh bruh bruh",
+    "userId":"5422e6f0-8a77-4484-a2a6-a6be66b60c36",
+    "duedate": "2022-08-15T07:43:54.312Z"
+}
+
+
+### UPDATE PROJECT
+
+PUT  http://localhost:5000/projects/168a13de-2b58-401f-b265-8e31055f4c4a
+Content-Type: application/json
+
+{
+    "userId": "5422e6f0-8a77-4484-a2a6-a6be66b60c36",
+    "description": "bruh bruh bruh updated",
+    "name": "Work on Bruh updated",
+    "duedate": "2022-08-15T07:43:54.312Z"
+  }
+
+
+
+### GET ONE PROJECT
+GET http://localhost:5000/projects/168a13de-2b58-401f-b265-8e31055f4c4a
+
+### DELETE PROJECTS
+DELETE  http://localhost:5000/projects/babd1a43-00c9-42d0-92de-d7566260994c
+
+
+
+
+
+
+
+
+
+###GET ALL USERS
+
+GET   http://localhost:5000/users
+
+
+### USERS
+POST  http://localhost:5000/users
+Content-Type: application/json
+
+{
+    "username":"clara",
+    "name":"clara",
+    "email":"clara_@yopmail.com",
+    "role":"user"
+}
+
+
+
+
+#### GetOneUser
+GET   http://localhost:5000/users/5422e6f0-8a77-4484-a2a6-a6be66b60c36
+
+
+### UPDATES USERS
+
+PUT   http://localhost:5000/users/26acc4df-1207-4031-9c4e-420f20a32625
+Content-Type: application/json
+
+{
+    
+ 
+    "username": "clara_mae",
+    "email": "clara_@yopmail.com",
+    "name": "clara",
+    "role": "user"
+  }
+
+
+### DELETE USER
+
+DELETE    http://localhost:5000/users/6b3fe8b0-7370-4610-a951-491d2978a17a
