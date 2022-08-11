@@ -12,9 +12,14 @@ const showRegisterBtn = document.querySelector(".show-register-btn")! as HTMLBut
 class App {
     readonly BASE_URL = "http://localhost:5000"
     user = {};
+    registerUser: any;
 
     constructor() {
         this.setupDisplay();
+    }
+
+    isRegistered(){
+        return
     }
     
     isLoggedIn() {
@@ -74,6 +79,33 @@ class App {
         // call backend - POST using fetch
     }
 
+    //regiser anew user
+    RegisterUser (name:string,username:string,role:string,email:string,password:string){
+        fetch(`${this.BASE_URL}/user/register`,{
+            method:"POST",
+            headers:{
+                'conntent-type':'application/json',
+            },
+            body:JSON.stringify({name,username,role,email,password})
+        })
+        .then(res =>res.json())
+        .then(res=>{
+            if(res.success){
+                //
+                localStorage.setItem("token", res.token)
+                localStorage.setItem("user", JSON.stringify(res.user))
+
+                alert("user registered  successfully")
+                this.setupDisplay();
+            }else{
+                alert(res.message)
+            }
+        })
+        .catch(error=>{
+            console.log(error.message)
+        })
+    }
+
 }
 
 const app = new App();
@@ -115,6 +147,7 @@ registerForm.addEventListener("submit", (e)=>{
     e.preventDefault();
     const nameInput = document.getElementById("register_name")! as HTMLInputElement
     const usernameInput = document.getElementById("register_username")! as HTMLInputElement
+    const roleInput = document.getElementById("register_role")! as HTMLInputElement
     const emailInput = document.getElementById("register_email")! as HTMLInputElement
     const passwordInput = document.getElementById("register_password")! as HTMLInputElement
 
@@ -138,6 +171,6 @@ registerForm.addEventListener("submit", (e)=>{
         alert("please enter email")
         return
      }
-
+        app.RegisterUser(emailInput.value, nameInput.value,usernameInput.value,roleInput.value,passwordInput.value)
      
 })

@@ -109,4 +109,5 @@ registerForm.addEventListener("submit", (e) => {
         alert("please enter email");
         return;
     }
+    // app.registerUser()
 });
