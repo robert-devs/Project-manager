@@ -69,7 +69,7 @@ export const getAllProjectsController = async(req:Request,res:Response)=>{
        const pool= await mssql.connect(sqlConfig)
        const projects = await pool.request().execute('getAllProjects')
         const{recordset} = projects
-       res.json(recordset)
+       res.json({projects: recordset})
     } catch (error:any) {
         res.json({error})
         
@@ -79,11 +79,7 @@ export const getAllProjectsController = async(req:Request,res:Response)=>{
 export const getOneProjectController:RequestHandler<{id:string}> = async(req,res)=>{
     
         try {
-             // Validate REQ BODY (JOI)
-             const {error} = createProjectSchema.validate(req.body);
-            if(error){
-                return res.status(400).send({message: error?.details[0].message})
-            }
+        
        
             const id = req.params.id
             const pool= await mssql.connect(sqlConfig)
@@ -96,6 +92,22 @@ export const getOneProjectController:RequestHandler<{id:string}> = async(req,res
                  return res.status(404).send({message:`Project with id '${id}' not found`})
             }
            res.send({projects:recordset[0]})
+        } catch (error:any) {
+             res.status(500).send({message:"Internal Server Error: "+ error.message})
+        }  
+}
+export const getOneProjectsByUserIdController:RequestHandler<{id:string}> = async(req,res)=>{
+    
+        try {
+        
+            const id = req.params.id
+            const pool= await mssql.connect(sqlConfig)
+           const projects = await pool.request()
+           .input('userId',mssql.VarChar,id)
+           .execute('getProjectsByUserId')
+            const{recordset} = projects
+    
+           res.send({projects:recordset})
         } catch (error:any) {
              res.status(500).send({message:"Internal Server Error: "+ error.message})
         }  

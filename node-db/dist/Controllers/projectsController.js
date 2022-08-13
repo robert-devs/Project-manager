@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteProject = exports.updateProjects = exports.getOneProjectController = exports.getAllProjectsController = exports.createProjectController = void 0;
+exports.deleteProject = exports.updateProjects = exports.getOneProjectsByUserIdController = exports.getOneProjectController = exports.getAllProjectsController = exports.createProjectController = void 0;
 const mssql_1 = __importDefault(require("mssql"));
 const uuid_1 = require("uuid");
 const config_1 = require("../Config/config");
@@ -62,7 +62,7 @@ const getAllProjectsController = (req, res) => __awaiter(void 0, void 0, void 0,
         const pool = yield mssql_1.default.connect(config_1.sqlConfig);
         const projects = yield pool.request().execute('getAllProjects');
         const { recordset } = projects;
-        res.json(recordset);
+        res.json({ projects: recordset });
     }
     catch (error) {
         res.json({ error });
@@ -71,11 +71,6 @@ const getAllProjectsController = (req, res) => __awaiter(void 0, void 0, void 0,
 exports.getAllProjectsController = getAllProjectsController;
 const getOneProjectController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        // Validate REQ BODY (JOI)
-        const { error } = userValidator_1.createProjectSchema.validate(req.body);
-        if (error) {
-            return res.status(400).send({ message: error === null || error === void 0 ? void 0 : error.details[0].message });
-        }
         const id = req.params.id;
         const pool = yield mssql_1.default.connect(config_1.sqlConfig);
         const projects = yield pool.request()
@@ -92,6 +87,21 @@ const getOneProjectController = (req, res) => __awaiter(void 0, void 0, void 0, 
     }
 });
 exports.getOneProjectController = getOneProjectController;
+const getOneProjectsByUserIdController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const id = req.params.id;
+        const pool = yield mssql_1.default.connect(config_1.sqlConfig);
+        const projects = yield pool.request()
+            .input('userId', mssql_1.default.VarChar, id)
+            .execute('getProjectsByUserId');
+        const { recordset } = projects;
+        res.send({ projects: recordset });
+    }
+    catch (error) {
+        res.status(500).send({ message: "Internal Server Error: " + error.message });
+    }
+});
+exports.getOneProjectsByUserIdController = getOneProjectsByUserIdController;
 const updateProjects = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         // Validate REQ BODY (JOI)

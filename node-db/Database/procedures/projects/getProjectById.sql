@@ -7,8 +7,10 @@ CREATE OR ALTER PROCEDURE getProjectById
 )
 AS
 BEGIN
-    SELECT *
-    FROM dbo.projects
-    WHERE id = @id
+    SELECT users.name uname , projects.id, projects.userId, projects.name pname, projects.description, projects.duedate
+    FROM users
+        INNER JOIN projects
+        ON users.id =projects.userId
+    WHERE projects.id = @id
 END
 GO

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createProjectController, deleteProject, getAllProjectsController, getOneProjectController, updateProjects } from "../Controllers/projectsController";
+import { createProjectController, deleteProject, getAllProjectsController, getOneProjectsByUserIdController, getOneProjectController, updateProjects } from "../Controllers/projectsController";
 
 const router = Router()
 
@@ -11,6 +11,9 @@ router.get("/all", getAllProjectsController)
 
 //get one project
 router.get("/:id", getOneProjectController)
+
+//project by userId
+router.get("/assigned/:id", getOneProjectsByUserIdController)
 
 //updates projectes
 router.put("/:id",updateProjects)

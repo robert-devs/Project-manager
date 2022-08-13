@@ -58,6 +58,7 @@ const registerUserController = (req, res) => __awaiter(void 0, void 0, void 0, f
     try {
         const id = (0, uuid_1.v4)();
         const pool = yield mssql_1.default.connect(config_1.sqlConfig);
+        console.log(req.body);
         // Validate REQ BODY (JOI)
         const { error } = userValidator_1.registerUserSchema.validate(req.body);
         if (error) {

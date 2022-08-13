@@ -1,0 +1,135 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --light-color: #aedada;
+    --accent-color: #1a6766;
+}
+
+body {
+    background-color: var(--light-color);
+}
+
+.dashboard-container {
+    background-color: white;
+    min-height: 90vh;
+    max-width: 1240px;
+    margin: 0px auto;
+    margin-top: 20px;
+    border-radius: 5px;
+    overflow: hidden;
+    display: flex;
+}
+
+.sidebar {
+    background-color: #f2f2f2;
+    width: 250px;
+    padding: 20px;
+    display: grid;
+    border: none;
+    gap: 10px;
+}
+#users-btn{
+    color: rgb(0, 195, 255);
+    outline: none;
+    font-size: 25px;
+    /* background-color: rgb(165, 182, 176); */
+    border: none;
+}
+#projects-btn {
+    outline: none;
+    border: none;
+    font-size: 25px;
+    color: rgb(0, 195, 255);
+}
+#create-project-btn {
+    outline: none;
+    border: none;
+    font-size: 25px;
+    color: rgb(0, 195, 255);
+}
+
+
+main {
+    padding: 20px;
+    width: 100%;
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    padding: 20px;
+}
+
+table h1 {
+    background-color: aqua;
+}
+
+td,
+th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 20px;
+}
+
+tr:nth-child(even) {
+    background-color: #D6EEEE;
+}
+
+.btn{
+    background-color: #0400ff;
+    color: white;
+    padding: 5px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+
+} 
+
+
+.text {
+    margin: 100px;
+}
+#add-project-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: aquamarine;
+    height: 450px;
+    width: 400px;
+    border-radius: 8px;
+    padding: 20px;
+    
+}
+#add-project-form h2{
+    text-align: center;
+    margin: 20px;
+}
+#add-project-form input{
+    gap: 20px;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    margin: 10px;
+}
+#add-project-form label{
+    margin-top: 10px;
+}
+#add-project-form button{
+    
+    padding: 10px;
+    text-align: center;
+    border: none;
+    outline: none;
+    font-size: 15px;
+    border-radius: 5px;
+    width: 100%;
+    color: rgb(228, 7, 162);
+    margin-bottom: 18px;
+}

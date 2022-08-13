@@ -76,3 +76,29 @@
     background-color: transparent !important;
     margin: 5px !important;
 }
+.dashboard-container{
+    /* display: flex; */
+    justify-content: center;
+    align-items: center;
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    padding: 20px;
+}
+table h1{
+    background-color: aqua;
+}
+
+td,
+th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 20px;
+}
+
+tr:nth-child(even) {
+    background-color: #D6EEEE;
+}

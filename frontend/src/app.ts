@@ -1,6 +1,5 @@
 "use strict";
 const formContainer = document.querySelector(".form-container")! as HTMLDivElement;
-const dashboardContainer = document.querySelector(".dashboard-container")! as HTMLDivElement;
 
 const registerForm = document.querySelector("#register-form")! as HTMLFormElement;
 const loginForm = document.querySelector("#login-form")! as HTMLFormElement;
@@ -8,50 +7,27 @@ const loginForm = document.querySelector("#login-form")! as HTMLFormElement;
 const showLoginBtn = document.querySelector(".show-login-btn")! as HTMLButtonElement;
 const showRegisterBtn = document.querySelector(".show-register-btn")! as HTMLButtonElement;
 
-
+interface User {
+    id?:string
+    role?:string
+    name:string,
+    username:string,
+    password?:string
+    email:string
+    description?:string
+}
 class App {
-    readonly BASE_URL = "http://localhost:5000"
-    user = {};
-    registerUser: any;
-
-    constructor() {
-        this.setupDisplay();
-    }
-
-    isRegistered(){
-        return
-    }
     
-    isLoggedIn() {
-        return localStorage.getItem("token") !== null;
-    }
-    
-    setupDisplay(){
-        if (this.isLoggedIn()) {
-            formContainer.style.display = "none"
-            dashboardContainer.style.display = "flex";
+    readonly BASE_URL = "http://localhost:5000";
+    RegisterProject: []=[];
 
-            if(localStorage.getItem("user") !== null){
-                try {
-                    this.user = JSON.parse(localStorage.getItem("user")?? "")
-                } catch (error) {
-                    localStorage.clear();
-                    this.setupDisplay()
-                    
-                }
-                
-            }
-        }
-        else {
-            formContainer.style.display = "flex"
-            dashboardContainer.style.display = "none"
-        }
-    }
+    constructor() {}
     
     logginUser(email: string, password: string){
         
         fetch(`${this.BASE_URL}/users/login`, {
             method:"POST", 
+            mode: 'cors',
             headers: {
               'content-type': 'application/json',
             },
@@ -65,7 +41,13 @@ class App {
                 localStorage.setItem("user", JSON.stringify(res.user))
 
                 alert("Logged In successfully")
-                this.setupDisplay();
+
+                if(res.user.role === "admin"){
+                    window.location.replace("./admin.html")
+                    
+                }else{
+                    window.location.replace("./user.html")
+                }
             }else{
                 alert(res.message)
             }
@@ -79,14 +61,21 @@ class App {
         // call backend - POST using fetch
     }
 
-    //regiser anew user
-    RegisterUser (name:string,username:string,role:string,email:string,password:string){
-        fetch(`${this.BASE_URL}/user/register`,{
+    RegisterUser({name,username,email,password}:  User){
+
+        fetch(`${this.BASE_URL}/users/register`,{
             method:"POST",
+            mode: 'cors',
             headers:{
-                'conntent-type':'application/json',
+                'Content-Type':'application/json',
             },
-            body:JSON.stringify({name,username,role,email,password})
+            body: JSON.stringify({
+                name,
+                username,
+                role:"user",
+                email,
+                password
+            })
         })
         .then(res =>res.json())
         .then(res=>{
@@ -96,7 +85,14 @@ class App {
                 localStorage.setItem("user", JSON.stringify(res.user))
 
                 alert("user registered  successfully")
-                this.setupDisplay();
+                if(res.user.role === "admin"){
+                    window.location.replace("./admin.html")
+                    
+                }else{
+                    window.location.replace("./user.html")
+                }
+                     
+
             }else{
                 alert(res.message)
             }
@@ -110,8 +106,6 @@ class App {
 
 const app = new App();
 
-
-console.log(showLoginBtn, showRegisterBtn);
 
 showLoginBtn.onclick = ()=>{
     loginForm.style.display = "flex"
@@ -147,10 +141,8 @@ registerForm.addEventListener("submit", (e)=>{
     e.preventDefault();
     const nameInput = document.getElementById("register_name")! as HTMLInputElement
     const usernameInput = document.getElementById("register_username")! as HTMLInputElement
-    const roleInput = document.getElementById("register_role")! as HTMLInputElement
     const emailInput = document.getElementById("register_email")! as HTMLInputElement
     const passwordInput = document.getElementById("register_password")! as HTMLInputElement
-
 
      if (!emailInput.value){
         alert("please enter email")
@@ -158,19 +150,25 @@ registerForm.addEventListener("submit", (e)=>{
      }
 
      if (!nameInput.value){
-        alert("please enter email")
+        alert("please enter name")
         return
      }
 
      if (!usernameInput.value){
-        alert("please enter email")
+        alert("please enter username")
         return
      }
 
      if (!passwordInput.value){
-        alert("please enter email")
+        alert("please enter password")
         return
      }
-        app.RegisterUser(emailInput.value, nameInput.value,usernameInput.value,roleInput.value,passwordInput.value)
+
+        app.RegisterUser({
+            name: nameInput.value, 
+            username: usernameInput.value,
+            email: emailInput.value, 
+            password:passwordInput.value
+        })
      
 })

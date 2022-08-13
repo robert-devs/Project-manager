@@ -1,6 +1,5 @@
 "use strict";
 const formContainer = document.querySelector(".form-container");
-const dashboardContainer = document.querySelector(".dashboard-container");
 const registerForm = document.querySelector("#register-form");
 const loginForm = document.querySelector("#login-form");
 const showLoginBtn = document.querySelector(".show-login-btn");
@@ -8,35 +7,12 @@ const showRegisterBtn = document.querySelector(".show-register-btn");
 class App {
     constructor() {
         this.BASE_URL = "http://localhost:5000";
-        this.user = {};
-        this.setupDisplay();
-    }
-    isLoggedIn() {
-        return localStorage.getItem("token") !== null;
-    }
-    setupDisplay() {
-        var _a;
-        if (this.isLoggedIn()) {
-            formContainer.style.display = "none";
-            dashboardContainer.style.display = "flex";
-            if (localStorage.getItem("user") !== null) {
-                try {
-                    this.user = JSON.parse((_a = localStorage.getItem("user")) !== null && _a !== void 0 ? _a : "");
-                }
-                catch (error) {
-                    localStorage.clear();
-                    this.setupDisplay();
-                }
-            }
-        }
-        else {
-            formContainer.style.display = "flex";
-            dashboardContainer.style.display = "none";
-        }
+        this.RegisterProject = [];
     }
     logginUser(email, password) {
         fetch(`${this.BASE_URL}/users/login`, {
             method: "POST",
+            mode: 'cors',
             headers: {
                 'content-type': 'application/json',
             },
@@ -49,7 +25,12 @@ class App {
                 localStorage.setItem("token", res.token);
                 localStorage.setItem("user", JSON.stringify(res.user));
                 alert("Logged In successfully");
-                this.setupDisplay();
+                if (res.user.role === "admin") {
+                    window.location.replace("./admin.html");
+                }
+                else {
+                    window.location.replace("./user.html");
+                }
             }
             else {
                 alert(res.message);
@@ -60,9 +41,45 @@ class App {
         });
         // call backend - POST using fetch
     }
+    RegisterUser({ name, username, email, password }) {
+        fetch(`${this.BASE_URL}/users/register`, {
+            method: "POST",
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name,
+                username,
+                role: "user",
+                email,
+                password
+            })
+        })
+            .then(res => res.json())
+            .then(res => {
+            if (res.success) {
+                //
+                localStorage.setItem("token", res.token);
+                localStorage.setItem("user", JSON.stringify(res.user));
+                alert("user registered  successfully");
+                if (res.user.role === "admin") {
+                    window.location.replace("./admin.html");
+                }
+                else {
+                    window.location.replace("./user.html");
+                }
+            }
+            else {
+                alert(res.message);
+            }
+        })
+            .catch(error => {
+            console.log(error.message);
+        });
+    }
 }
 const app = new App();
-console.log(showLoginBtn, showRegisterBtn);
 showLoginBtn.onclick = () => {
     loginForm.style.display = "flex";
     registerForm.style.display = "none";
@@ -98,16 +115,21 @@ registerForm.addEventListener("submit", (e) => {
         return;
     }
     if (!nameInput.value) {
-        alert("please enter email");
+        alert("please enter name");
         return;
     }
     if (!usernameInput.value) {
-        alert("please enter email");
+        alert("please enter username");
         return;
     }
     if (!passwordInput.value) {
-        alert("please enter email");
+        alert("please enter password");
         return;
     }
-    // app.registerUser()
+    app.RegisterUser({
+        name: nameInput.value,
+        username: usernameInput.value,
+        email: emailInput.value,
+        password: passwordInput.value
+    });
 });

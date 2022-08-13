@@ -59,13 +59,20 @@
 -- END
 
 CREATE OR ALTER PROCEDURE updateUser(
-    @id VARCHAR(100),
-    @username VARCHAR(100),
-    @name VARCHAR(100),
-    @email VARCHAR(100),
-    @role VARCHAR(100)
+  @id VARCHAR(100),
+  @username VARCHAR(100),
+  @name VARCHAR(100),
+  @email VARCHAR(100),
+  @role VARCHAR(100)
 )
 AS
 BEGIN
-    delete users WHERE id = @id
+  delete users WHERE id = @id
 END
+
+SELECT users.name uname , projects.id, projects.userId, projects.name pname, projects.description, projects.duedate
+FROM users
+  INNER JOIN projects
+  ON users.id =projects.userId
+
+SELECT projects.

@@ -55,6 +55,9 @@ export const registerUserController = async (req:ExtendedUserRequest,res:Respons
         const id = uid()
         const pool= await mssql.connect(sqlConfig)
 
+        console.log(req.body);
+        
+
 
         // Validate REQ BODY (JOI)
         const {error} = registerUserSchema.validate(req.body);

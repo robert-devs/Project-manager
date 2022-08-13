@@ -9,6 +9,8 @@ router.post("/create", projectsController_1.createProjectController);
 router.get("/all", projectsController_1.getAllProjectsController);
 //get one project
 router.get("/:id", projectsController_1.getOneProjectController);
+//project by userId
+router.get("/assigned/:id", projectsController_1.getOneProjectsByUserIdController);
 //updates projectes
 router.put("/:id", projectsController_1.updateProjects);
 //delete projects

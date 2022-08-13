@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project-Manager</title>
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <div class="sidebar">
+            <button id="projects-btn">Projects</button>
+            <button id="users-btn">Users</button>
+            <button id="create-project-btn">Create Project</button>
+        </div>
+        <main>
+
+
+            <div id="projects-table">
+                <table>
+                    <h1>Projects</h1>
+                    <br>
+                    <tr>
+                        <th>name</th>
+                        <th>Description</th>
+                        <th>User</th>
+                        <th>Due Date</th>
+                        <th></th>
+                    </tr>
+
+                    <tbody id="projects-table-body">
+
+                    </tbody>
+
+                </table>
+            </div>
+
+            <div style="display: none;" id="users-table">
+                <h1>Users..</h1>
+                <br>
+                <table>
+                    <tr>
+                        <th>id</th>
+                        <th>username</th>
+                        <th>email</th>
+                        <th>Name</th>
+                        <th>Role</th>
+                        <th></th>
+                    </tr>
+                    <tbody id="users-table-body">
+
+                    </tbody>
+                </table>
+            </div>
+            <form action="" style="display: none;" id="add-project-form">
+                <h2>Add Project</h2>
+                <form id="add-project-form" style="display: none;" class="form">
+                    <label> name*</label>
+                    <input type="text" id="create_name" name="name" />
+
+                    <label> userId*</label>
+                    <input type="text" id="create_userId" name="email" />
+
+                    <label> description*</label>
+                    <input text="text" id="create_description" name="description" style="height: 60px;" />
+
+                    <label> DueDate*</label>
+                    <input type="datetime" id="create_date" name="datetime" />
+
+                    <button>Submit</button>
+                </form>
+            </form>
+        </main>
+    </div>
+    <script src="./dist/admin.js"></script>
+</body>
+
+</html>
