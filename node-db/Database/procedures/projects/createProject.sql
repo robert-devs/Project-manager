@@ -9,7 +9,7 @@ CREATE or ALTER PROCEDURE createProject
 AS
 BEGIN
     INSERT INTO projects
-        (id, userId, name, description, duedate)
+        (id, userId, name, description, duedate, issent)
     VALUES
-        (@id, @userId, @name, @description, @duedate)
+        (@id, @userId, @name, @description, @duedate, '0')
 END

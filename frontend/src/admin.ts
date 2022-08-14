@@ -108,7 +108,7 @@ class AdminDashboard {
         <td>${users.email}</td>
         <td>${users.name}</td>
         <td>${users.role}</td>
-            <td><button class = "btn">Delete</button></td>
+            <td><button class = "btn" onclick="">Delete</button></td>
         </tr>
         `)).join('')
 
