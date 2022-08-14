@@ -17,6 +17,7 @@ let configurations={
       pass:process.env.PASSWORD as string
     }
   }
+  
 
 
   const sendMail = async(messageoption:any)=>{
@@ -24,7 +25,9 @@ let configurations={
     await transporter.verify()
     await transporter.sendMail(messageoption, (error,info)=>{
         if(error){
-            console.log(error);
+          console.log("=================");
+          console.log(error);
+          console.log("=================");
             
         }
         console.log(info.response);

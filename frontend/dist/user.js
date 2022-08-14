@@ -41,7 +41,6 @@ class UserDashboard {
          <td>${projects.name}</td>
         <td>${projects.description}</td>
        <td>${new Date(projects.duedate).toDateString()}</td>
-        <td><button class = "btn">Delete</button></td>
         </tr>
         `);
         }).join('');

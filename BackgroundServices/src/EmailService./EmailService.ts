@@ -15,9 +15,10 @@ interface Project{
 }
 
 
-const SendEmails= async()=>{
+const SendEmails= async()=>{    
     const pool = await mssql.connect(sqlConfig)
     const projects:Project[]= await(await pool.request().query(`SELECT * FROM projects WHERE issent='0'`)).recordset
+    
 
     for(let project of projects){
 
@@ -25,21 +26,32 @@ const SendEmails= async()=>{
     const users = await pool.request()
               .input('id',mssql.VarChar,project.userId)
               .execute('getUserById')
-              const{recordset} = users
+              const{recordset} = users              
   
-    if(!recordset[0]){
+    if(recordset.length > 0){
       const user = recordset[0]
-      ejs.renderFile('templates/registration.ejs',{name:user.name,task:project.name} ,async(error,data)=>{
+
+      console.log({user});
+      
+      
+      ejs.renderFile('templates/taskassigned.ejs',{name:user.name,task:project.name} ,async(error,data)=>{
+            if(error){
+                console.log(error);
+                return
+            }
+
           let messageoption={
               from:process.env.EMAIL,
               to:user.email,
               subject:"Jitu Project Task",
               html:data
           }
+
           try {
               
+              console.log('Sending Email');
               await sendMail(messageoption)
-              await pool.request().query(`UPDATE project SET issent='1' WHERE id = ${project.id}`)
+              await pool.request().query(`UPDATE projects SET issent='1' WHERE id = '${project.id}'`)
               console.log('Email is Sent');
               
           } catch (error) {

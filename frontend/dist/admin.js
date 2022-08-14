@@ -15,6 +15,49 @@ class AdminDashboard {
         this.projects = [];
         this.users = [];
         this.form = [];
+        this.checkProject = (id) => {
+            const newProject = this.projects.map(project => {
+                if (project.id === id)
+                    return project;
+            });
+            this.project = newProject;
+            this.showProjects();
+        };
+        //eventslisterners
+        this.addEventlisteners = () => {
+            const deleteProjectBtns = document.querySelectorAll('.delete-project-btn');
+            console.log(deleteProjectBtns);
+            for (const index in deleteProjectBtns) {
+                const deleteProjectBtn = deleteProjectBtns[index];
+                if (deleteProjectBtn instanceof HTMLButtonElement) {
+                    deleteProjectBtn.addEventListener('click', (e) => {
+                        if (e.target) {
+                            const target = e.target;
+                            const id = target.getAttribute('data-id');
+                            console.log("IFD", target);
+                            if (id)
+                                this.deletePoject(id);
+                        }
+                    });
+                }
+            }
+            ///delete
+            const deletebtns = document.querySelectorAll('.deleteBtn');
+            console.log(deletebtns);
+            for (const index in deletebtns) {
+                const deleteBtn = deletebtns[index];
+                if (deleteBtn instanceof HTMLButtonElement) {
+                    deleteBtn.addEventListener('click', (e) => {
+                        if (e.target) {
+                            const target = e.target;
+                            const id = target.getAttribute("data-id");
+                            if (id)
+                                this.deleteProject(parseInt(id));
+                        }
+                    });
+                }
+            }
+        };
         if (!this.isLoggedIn()) {
             window.location.replace("./index.html");
         }
@@ -27,6 +70,7 @@ class AdminDashboard {
                 }
                 else {
                     this.fetchProjects();
+                    this.fetchUsers();
                 }
             }
             catch (error) {
@@ -38,18 +82,19 @@ class AdminDashboard {
         return localStorage.getItem("token") !== null;
     }
     showProjects() {
-        console.log(projectsTableBody);
+        // console.log(projectsTableBody);
         // console.log(this.projects);
         const html = this.projects.map((project) => (`
-        <tr>
+        <tr  class = "projectsResult" ">
             <td>${project.pname}</td>
             <td>${project.description}</td>
             <td>${project.uname}</td>
             <td>${new Date(project.duedate).toDateString()}</td>
-            <td><button class = "btn">update</button></td>
+            <td><button class = "delete-project-btn" data-id="${project.id}" >delete</button></td>
         </tr>
         `)).join('');
         projectsTableBody.innerHTML = html;
+        this.addEventlisteners();
     }
     fetchProjects() {
         fetch(`${this.BASE_URL}/projects/all`, {
@@ -68,6 +113,15 @@ class AdminDashboard {
         });
         // call backend - POST using fetch
     }
+    populateUsers() {
+        console.log(this.users);
+        const html = this.users.map(({ id, name }) => {
+            return `<option value='${id}'>${name}</option>`;
+        }).join("");
+        const userIdSelectInput = document.getElementById("create_userId");
+        userIdSelectInput.innerHTML = `<option value=""></option>`;
+        userIdSelectInput.innerHTML += html;
+    }
     //USER
     showUsers() {
         // console.log(usersTableBody );
@@ -81,11 +135,12 @@ class AdminDashboard {
         <td>${users.email}</td>
         <td>${users.name}</td>
         <td>${users.role}</td>
-            <td><button class = "btn" onclick="">Delete</button></td>
+          
         </tr>
         `);
         }).join('');
         usersTableBody.innerHTML = html;
+        this.addEventlisteners();
     }
     fetchUsers() {
         fetch(`${this.BASE_URL}/users`, {
@@ -123,16 +178,8 @@ class AdminDashboard {
             .then(res => res.json())
             .then(res => {
             if (res.success) {
-                //
-                localStorage.setItem("token", res.token);
-                localStorage.setItem("user", JSON.stringify(res.user));
-                alert("user registered  successfully");
-                if (res.user.role === "admin") {
-                    window.location.replace("./admin.html");
-                }
-                else {
-                    window.location.replace("./user.html");
-                }
+                alert("Project Created Successfully");
+                addProjectForm.reset();
             }
             else {
                 alert(res.message);
@@ -140,6 +187,26 @@ class AdminDashboard {
         })
             .catch(error => {
             console.log(error.message);
+        });
+    }
+    //deleteProject
+    deletePoject(id) {
+        fetch(`${this.BASE_URL}/projects/${id}`, {
+            method: "DELETE",
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
+            if (res.success) {
+                this.fetchProjects();
+                alert('project deleted succesfully');
+            }
+            else {
+                alert(res.message);
+            }
         });
     }
 }
@@ -162,6 +229,7 @@ createProjectBtn.onclick = () => {
     addProjectForm.style.display = "block";
     usersTable.style.display = "none";
     projectsTable.style.display = "none";
+    admin.populateUsers();
 };
 addProjectForm.addEventListener("submit", e => {
     e.preventDefault();

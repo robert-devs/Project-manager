@@ -31,6 +31,7 @@ interface UserInterface{
 
 
 class AdminDashboard {
+    [x: string]: any;
     readonly BASE_URL = "http://localhost:5000"
     projects:ProjectInterface[] | [] = [];
     users:UserInterface[ ] | [] =[];
@@ -47,6 +48,7 @@ class AdminDashboard {
                      window.location.replace("./index.html")
                 }else{
                     this.fetchProjects();
+                    this.fetchUsers()
                 }
             } catch (error) {
                 window.location.replace("./index.html")
@@ -59,20 +61,21 @@ class AdminDashboard {
     }
 
     showProjects(){
-        console.log(projectsTableBody);
+        // console.log(projectsTableBody);
         // console.log(this.projects);
 
         const html = this.projects.map((project: ProjectInterface)=>(`
-        <tr>
+        <tr  class = "projectsResult" ">
             <td>${project.pname}</td>
             <td>${project.description}</td>
             <td>${project.uname}</td>
             <td>${new Date(project.duedate).toDateString()}</td>
-            <td><button class = "btn">update</button></td>
+            <td><button class = "delete-project-btn" data-id="${project.id}" >delete</button></td>
         </tr>
         `)).join('')
 
         projectsTableBody.innerHTML = html;
+        this.addEventlisteners()
     }
     
     fetchProjects(){
@@ -93,6 +96,18 @@ class AdminDashboard {
         // call backend - POST using fetch
     }
 
+    populateUsers(){
+        console.log(this.users);
+        const html = this.users.map(({id, name})=>{
+            
+            return `<option value='${id}'>${name}</option>`
+        }).join("")
+
+        const userIdSelectInput = document.getElementById("create_userId")! as HTMLSelectElement;
+        userIdSelectInput.innerHTML = `<option value=""></option>` ;
+        userIdSelectInput.innerHTML += html;
+    }
+
 
 
 
@@ -108,11 +123,13 @@ class AdminDashboard {
         <td>${users.email}</td>
         <td>${users.name}</td>
         <td>${users.role}</td>
-            <td><button class = "btn" onclick="">Delete</button></td>
+          
         </tr>
         `)).join('')
 
         usersTableBody.innerHTML = html;
+
+        this.addEventlisteners()
     }
 
       fetchUsers(){
@@ -154,19 +171,8 @@ class AdminDashboard {
         .then(res =>res.json())
         .then(res=>{
             if(res.success){
-                //
-                localStorage.setItem("token", res.token)
-                localStorage.setItem("user", JSON.stringify(res.user))
-
-                alert("user registered  successfully")
-                if(res.user.role === "admin"){
-                    window.location.replace("./admin.html")
-                    
-                }else{
-                    window.location.replace("./user.html")
-                }
-                     
-
+                alert("Project Created Successfully")
+                addProjectForm.reset()
             }else{
                 alert(res.message)
             }
@@ -175,7 +181,83 @@ class AdminDashboard {
             console.log(error.message)
         })
     }
+
+    //deleteProject
+  deletePoject(id: string){
+    fetch(`${this.BASE_URL}/projects/${id}`,{
+            method:"DELETE",
+            mode: 'cors',
+            headers:{
+                'Content-Type':'application/json',
+            }
+        })
+        .then(res=>res.json())
+        .then(res=>{
+            if(res.success){
+                this.fetchProjects()
+                alert('project deleted succesfully')
+            }else{
+                alert(res.message)
+            }
+        })
+  }
+
+
+
+
+
+
+    checkProject =(id:string)=>{
+        const newProject =this.projects.map(project =>{
+            if(project.id===id)
+            return project
+
+        })
+        this.project=newProject
+        this.showProjects()
+            
+    }
     
+
+
+
+    //eventslisterners
+    addEventlisteners = ()=>{
+        const   deleteProjectBtns = document.querySelectorAll('.delete-project-btn')
+
+        console.log(deleteProjectBtns);
+        
+        for (const index in deleteProjectBtns){
+            const deleteProjectBtn = deleteProjectBtns[index]
+            if(deleteProjectBtn instanceof HTMLButtonElement){
+                deleteProjectBtn.addEventListener('click',(e)=>{
+                    
+                    if(e.target){
+                        const target=e.target as HTMLElement;
+                        const id = target.getAttribute('data-id')
+                        console.log("IFD", target);
+                        if(id) this.deletePoject(id)
+                    }
+                })
+            }
+        }
+
+        ///delete
+        const deletebtns =document.querySelectorAll('.deleteBtn')
+        console.log(deletebtns)
+        for (const index in deletebtns){
+            const deleteBtn = deletebtns[index]
+            if(deleteBtn instanceof HTMLButtonElement){
+                deleteBtn.addEventListener('click',(e)=>{
+                    if (e.target){
+                        const target =e.target as HTMLElement
+                        const id =target.getAttribute("data-id")
+                        if(id)this.deleteProject(parseInt(id))
+                    }
+                })
+            }
+            }
+    }
 
 }
 
@@ -200,6 +282,7 @@ createProjectBtn.onclick = ()=>{
     addProjectForm.style.display = "block";
     usersTable.style.display = "none";
     projectsTable.style.display = "none";
+    admin.populateUsers()
 }
 
 addProjectForm.addEventListener("submit", e=>{
@@ -238,4 +321,6 @@ addProjectForm.addEventListener("submit", e=>{
             duedate:duedateInput.value
         })
     })
+
+
 

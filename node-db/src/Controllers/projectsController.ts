@@ -55,10 +55,10 @@ export const createProjectController = async(req:ExtendsRequest,res:Response)=>{
                 .execute("getProjectById")
         const project = projectsResult.recordset[0]
         
-        res.send({message: "project created succefully", project: project})
+        res.send({message: "project created succefully", project: project, success: true})
         
     } catch (error:any) {
-        res.json({error})
+        res.status(500).send({message:"Internal Server Error: "+ error.message,  success: false})
         
     }
 }
@@ -109,7 +109,7 @@ export const getOneProjectsByUserIdController:RequestHandler<{id:string}> = asyn
     
            res.send({projects:recordset})
         } catch (error:any) {
-             res.status(500).send({message:"Internal Server Error: "+ error.message})
+            res.status(500).send({message:"Internal Server Error: "+ error.message,  success: false})
         }  
 }
 
@@ -118,7 +118,7 @@ export const updateProjects:RequestHandler<{id:string}>=async(req,res)=>{
           // Validate REQ BODY (JOI)
              const {error} = updateProjectSchema.validate(req.body);
             if(error){
-                return res.status(400).send({message: error?.details[0].message})
+                return res.status(400).send({message: error?.details[0].message, success: false})
             }
 
         const id = req.params.id
@@ -145,7 +145,7 @@ export const updateProjects:RequestHandler<{id:string}>=async(req,res)=>{
 
                 res.json({message:"project updated"})
     } catch (error:any) {
-        res.json({message:'no projects to be updated'})
+        res.status(500).send({message:"Internal Server Error: "+ error.message,  success: false})
         
     }
 }
@@ -156,9 +156,9 @@ export const deleteProject:RequestHandler<{id :string}> =async(req,res)=>{
         const pool= await mssql.connect(sqlConfig)
         await pool.request().query(`DELETE FROM projects WHERE id='${id}'`)
 
-        res.json({message:'projects deleted'})
+        res.json({message:'projects deleted', success: true})
     } catch (error:any) {
-         res.json({message:'no project to be deleted'})
+        res.status(500).send({message:"Internal Server Error: "+ error.message,  success: false})
     }
 }
 //   try {

@@ -34,7 +34,7 @@ Content-Type: application/json
 
 
 ### GET ONE PROJECT
-GET http://localhost:5000/projects/168a13de-2b58-401f-b265-8e31055f4c4a
+GET http://localhost:5000/projects/16a8626f-2245-4f66-b6ed-caf2b722cd42
 
 ### DELETE PROJECTS
 DELETE  http://localhost:5000/projects/babd1a43-00c9-42d0-92de-d7566260994c

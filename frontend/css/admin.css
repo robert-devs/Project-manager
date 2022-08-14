@@ -32,6 +32,15 @@ body {
     border: none;
     gap: 10px;
 }
+.delete-project-btn {
+    background-color: #f700ff;
+    color: rgb(5, 235, 252);
+    padding: 10px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+
+}
 #users-btn{
     color: rgb(0, 195, 255);
     outline: none;
@@ -110,7 +119,10 @@ tr:nth-child(even) {
     text-align: center;
     margin: 20px;
 }
-#add-project-form input{
+#add-project-form input,
+#add-project-form select
+{
+
     gap: 20px;
     padding: 10px;
     width: 100%;

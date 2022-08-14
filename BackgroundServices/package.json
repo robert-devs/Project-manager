@@ -4,6 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start:build": "tsc -w",
+    "start:dev": "nodemon dist/server.js",
+    "start": "concurrently npm:start:*",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

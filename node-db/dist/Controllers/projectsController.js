@@ -50,10 +50,10 @@ const createProjectController = (req, res) => __awaiter(void 0, void 0, void 0, 
             .input("id", id)
             .execute("getProjectById");
         const project = projectsResult.recordset[0];
-        res.send({ message: "project created succefully", project: project });
+        res.send({ message: "project created succefully", project: project, success: true });
     }
     catch (error) {
-        res.json({ error });
+        res.status(500).send({ message: "Internal Server Error: " + error.message, success: false });
     }
 });
 exports.createProjectController = createProjectController;
@@ -98,7 +98,7 @@ const getOneProjectsByUserIdController = (req, res) => __awaiter(void 0, void 0,
         res.send({ projects: recordset });
     }
     catch (error) {
-        res.status(500).send({ message: "Internal Server Error: " + error.message });
+        res.status(500).send({ message: "Internal Server Error: " + error.message, success: false });
     }
 });
 exports.getOneProjectsByUserIdController = getOneProjectsByUserIdController;
@@ -107,7 +107,7 @@ const updateProjects = (req, res) => __awaiter(void 0, void 0, void 0, function*
         // Validate REQ BODY (JOI)
         const { error } = userValidator_1.updateProjectSchema.validate(req.body);
         if (error) {
-            return res.status(400).send({ message: error === null || error === void 0 ? void 0 : error.details[0].message });
+            return res.status(400).send({ message: error === null || error === void 0 ? void 0 : error.details[0].message, success: false });
         }
         const id = req.params.id;
         const pool = yield mssql_1.default.connect(config_1.sqlConfig);
@@ -129,7 +129,7 @@ const updateProjects = (req, res) => __awaiter(void 0, void 0, void 0, function*
         res.json({ message: "project updated" });
     }
     catch (error) {
-        res.json({ message: 'no projects to be updated' });
+        res.status(500).send({ message: "Internal Server Error: " + error.message, success: false });
     }
 });
 exports.updateProjects = updateProjects;
@@ -138,10 +138,10 @@ const deleteProject = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         const id = req.params.id;
         const pool = yield mssql_1.default.connect(config_1.sqlConfig);
         yield pool.request().query(`DELETE FROM projects WHERE id='${id}'`);
-        res.json({ message: 'projects deleted' });
+        res.json({ message: 'projects deleted', success: true });
     }
     catch (error) {
-        res.json({ message: 'no project to be deleted' });
+        res.status(500).send({ message: "Internal Server Error: " + error.message, success: false });
     }
 });
 exports.deleteProject = deleteProject;
