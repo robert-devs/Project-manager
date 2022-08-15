@@ -1,8 +1,8 @@
 * {
     margin: 0;
     padding: 0;
+    background-image: url(https://media.istockphoto.com/photos/taj-mahal-mausoleum-in-agra-picture-id1146517111?k=20&m=1146517111&s=612x612&w=0&h=vHWfu6TE0R5rG6DJkV42Jxr49aEsLN0ML-ihvtim8kk=);
     box-sizing: border-box;
-    background-image: url(https://cdn-boboe.nitrocdn.com/bosvnCLmelqFCVLkCaziURMhfREiyjMm/assets/static/optimized/rev-116ecf0/wp-content/uploads/2021/12/Web-Development-Concept-1.jpg);
     background-size: cover;
 }
 
@@ -20,22 +20,22 @@
     flex-direction: column;
     display: flex;
     padding: 20px;
-    border-radius: 8px;
+    border-radius: 10px;
     min-height: 200px;
     align-items: center;
     width: 500px;
-    background-color: rgb(213, 217, 219);
+    background-color: #d0d0e6;
 
 }
 
 .form h1 {
-    background-color: rgb(207, 241, 230);
+    /* background-color: rgb(160, 245, 241); */
     width: 100%;
     padding: 10px;
     border-radius: 8px;
     margin-bottom: 10px;
     margin: 20px;
-    color:white ;
+    color:black ;
 }
 
 
@@ -52,7 +52,7 @@
 }
 
 .form label {
-    color: white;
+    color: black;
     margin-top: 20px;
     align-self: flex-start;
     font-size: 16px;
