@@ -57,7 +57,7 @@ tr:nth-child(even) {
     background-color: #D6EEEE;
 }
 
-.btn{
+.delete-project-btn {
     background-color: #0400ff;
     color: white;
     padding: 5px;

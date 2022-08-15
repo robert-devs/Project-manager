@@ -96,8 +96,9 @@ class AdminDashboard {
         // call backend - POST using fetch
     }
 
+    
     populateUsers(){
-        console.log(this.users);
+        // console.log(this.users);
         const html = this.users.map(({id, name})=>{
             
             return `<option value='${id}'>${name}</option>`
