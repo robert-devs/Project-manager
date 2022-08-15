@@ -41,8 +41,8 @@ class UserDashboard {
     }
 
     showProjects(){
-        // console.log({userProjectsTableBody} );
-        // console.log("PRO", this.projects);
+        console.log({userProjectsTableBody} );
+        console.log("PRO", this.projects);
 
         const html = this.projects.map((projects: projectsInterfaces)=>(`
         <tr>
@@ -56,7 +56,7 @@ class UserDashboard {
     }
     
     fetchProjects(){
-        const user = JSON.parse(localStorage.getItem("user") ?? "");
+        const user = JSON.parse(localStorage.getItem("users") ?? "");
         
         fetch(`${this.BASE_URL}/projects/assigned/${user?.id}`, {
             method:"GET", 

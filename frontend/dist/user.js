@@ -31,8 +31,8 @@ class UserDashboard {
         return localStorage.getItem("token") !== null;
     }
     showProjects() {
-        // console.log({userProjectsTableBody} );
-        // console.log("PRO", this.projects);
+        console.log({ userProjectsTableBody });
+        console.log("PRO", this.projects);
         const html = this.projects.map((projects) => {
             var _a;
             return (`
@@ -48,7 +48,7 @@ class UserDashboard {
     }
     fetchProjects() {
         var _a;
-        const user = JSON.parse((_a = localStorage.getItem("user")) !== null && _a !== void 0 ? _a : "");
+        const user = JSON.parse((_a = localStorage.getItem("users")) !== null && _a !== void 0 ? _a : "");
         fetch(`${this.BASE_URL}/projects/assigned/${user === null || user === void 0 ? void 0 : user.id}`, {
             method: "GET",
             headers: {

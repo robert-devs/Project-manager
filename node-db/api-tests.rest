@@ -36,6 +36,11 @@ Content-Type: application/json
 ### GET ONE PROJECT
 GET http://localhost:5000/projects/16a8626f-2245-4f66-b6ed-caf2b722cd42
 
+
+### GetprojectByUserId
+GET http://localhost:5000/projects/assigned/345bc916-2951-4670-b929-725253c0cc68
+
+
 ### DELETE PROJECTS
 DELETE  http://localhost:5000/projects/babd1a43-00c9-42d0-92de-d7566260994c
 
@@ -69,6 +74,7 @@ Content-Type: application/json
 
 #### GetOneUser
 GET   http://localhost:5000/users/5422e6f0-8a77-4484-a2a6-a6be66b60c36
+
 
 
 ### UPDATES USERS
