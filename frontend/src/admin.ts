@@ -65,13 +65,16 @@ class AdminDashboard {
         // console.log(this.projects);
 
         const html = this.projects.map((project: ProjectInterface)=>(`
-        <tr  class = "projectsResult" ">
+        <tr >
             <td>${project.pname}</td>
             <td>${project.description}</td>
             <td>${project.uname}</td>
             <td>${new Date(project.duedate).toDateString()}</td>
             <td><button class = "delete-project-btn" data-id="${project.id}" >delete</button></td>
+             <td><button  class = "updateProject"  data-id="${project.id}" >update</button></td>
+            
         </tr>
+
         `)).join('')
 
         projectsTableBody.innerHTML = html;
@@ -143,7 +146,7 @@ class AdminDashboard {
         .then(res=>res.json())
         .then(res=>{
             this.users = res.users;
-            console.log( this.users)
+            // console.log( this.users)
             this.showUsers()
         })
         .catch(error=>{
@@ -202,23 +205,7 @@ class AdminDashboard {
             }
         })
   }
-
-
-
-
-
-
-    checkProject =(id:string)=>{
-        const newProject =this.projects.map(project =>{
-            if(project.id===id)
-            return project
-
-        })
-        this.project=newProject
-        this.showProjects()
-            
-    }
-    
+//   updateProject
 
 
 
@@ -226,7 +213,7 @@ class AdminDashboard {
     addEventlisteners = ()=>{
         const   deleteProjectBtns = document.querySelectorAll('.delete-project-btn')
 
-        console.log(deleteProjectBtns);
+        // console.log(deleteProjectBtns);
         
         for (const index in deleteProjectBtns){
             const deleteProjectBtn = deleteProjectBtns[index]
@@ -245,7 +232,7 @@ class AdminDashboard {
 
         ///delete
         const deletebtns =document.querySelectorAll('.deleteBtn')
-        console.log(deletebtns)
+        // console.log(deletebtns)
         for (const index in deletebtns){
             const deleteBtn = deletebtns[index]
             if(deleteBtn instanceof HTMLButtonElement){
@@ -257,7 +244,13 @@ class AdminDashboard {
                     }
                 })
             }
-            }
+        }
+        const updateProjects= document.querySelectorAll('.updateProject')
+        console.log(updateProjects)
+        for (const index in updateProjects){
+
+        }
+
     }
 
 }

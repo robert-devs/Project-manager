@@ -4,21 +4,21 @@ const userProjectsTableBody = document.getElementById("user-projects-table-body"
 const projectTable = document.getElementById("project-table");
 class UserDashboard {
     constructor() {
-        var _a;
         this.BASE_URL = "http://localhost:5000";
         this.projects = [];
         if (!this.isLoggedIn()) {
             window.location.replace("./index.html");
-            // console.log(this.users);
+            console.log(this.projects);
         }
         {
             try {
-                const user = JSON.parse((_a = localStorage.getItem("user")) !== null && _a !== void 0 ? _a : "");
+                const user = JSON.parse(localStorage.getItem("user") || "");
                 if ((user === null || user === void 0 ? void 0 : user.role) !== "user") {
                     localStorage.clear();
                     window.location.replace("./index.html");
                 }
                 else {
+                    console.log(user);
                     this.fetchProjects();
                 }
             }
@@ -48,7 +48,9 @@ class UserDashboard {
     }
     fetchProjects() {
         var _a;
-        const user = JSON.parse((_a = localStorage.getItem("users")) !== null && _a !== void 0 ? _a : "");
+        console.log("HEEEY");
+        const user = JSON.parse((_a = localStorage.getItem("user")) !== null && _a !== void 0 ? _a : "");
+        console.log("USER", user);
         fetch(`${this.BASE_URL}/projects/assigned/${user === null || user === void 0 ? void 0 : user.id}`, {
             method: "GET",
             headers: {
@@ -57,18 +59,20 @@ class UserDashboard {
         })
             .then(res => res.json())
             .then(res => {
-            var _a;
-            if (((_a = res.projects) === null || _a === void 0 ? void 0 : _a.length) > 0) {
+            if (res.success) {
                 this.projects = res.projects;
                 localStorage.setItem("projects", JSON.stringify(res.projects));
-                this.showProjects();
+                if (res.projects.length > 0) {
+                    this.showProjects();
+                }
             }
             else {
                 alert(res.message);
             }
         })
             .catch(error => {
-            console.log(error);
+            console.log("Hey");
+            console.log({ error });
         });
         // call backend - POST using fetch
     }
