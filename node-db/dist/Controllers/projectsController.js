@@ -95,7 +95,7 @@ const getOneProjectsByUserIdController = (req, res) => __awaiter(void 0, void 0,
             .input('userId', mssql_1.default.VarChar, id)
             .execute('getProjectsByUserId');
         const { recordset } = projects;
-        res.send({ projects: recordset });
+        res.send({ projects: recordset, success: true });
     }
     catch (error) {
         res.status(500).send({ message: "Internal Server Error: " + error.message, success: false });
@@ -145,20 +145,3 @@ const deleteProject = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.deleteProject = deleteProject;
-//   try {
-//         // GET ID FROM PARAMS
-//         const {id} = req.params;
-//         // CREATE POOL REQUEST
-//         const pool =await mssql.connect(sqlConfig)
-//         const request = await pool.request();
-//         request.input('id', id)
-//         // GET PROJECT BY ID
-//         const result = await request.execute('dbo.getProjectById')
-//         console.log(result.recordset);
-//         if(result.recordset.length === 0){
-//             return res.status(404).send({message:`Project with id '${id}' not found`})
-//         }        
-//         res.send({project: result.recordset[0] })
-//     } catch (error: any) {
-//         res.status(500).send({message:"Internal Server Error: "+ error.message})
-// }

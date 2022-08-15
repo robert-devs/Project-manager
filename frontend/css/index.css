@@ -2,6 +2,8 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    background-image: url(https://cdn-boboe.nitrocdn.com/bosvnCLmelqFCVLkCaziURMhfREiyjMm/assets/static/optimized/rev-116ecf0/wp-content/uploads/2021/12/Web-Development-Concept-1.jpg);
+    background-size: cover;
 }
 
 .form-container {
@@ -33,6 +35,7 @@
     border-radius: 8px;
     margin-bottom: 10px;
     margin: 20px;
+    color:white ;
 }
 
 
@@ -49,7 +52,7 @@
 }
 
 .form label {
-    color: rgb(22, 22, 22);
+    color: white;
     margin-top: 20px;
     align-self: flex-start;
     font-size: 16px;
